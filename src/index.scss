@@ -8,6 +8,10 @@ body {
   * {
 	font-family: 'Inter', system-ui;
   }
+
+  li,ul{
+	list-style-type: none;
+  }
   
   .wrapper {
 	background: #ffffff;
@@ -95,7 +99,7 @@ body {
 		display: flex;
 		align-items: flex-end;
 		margin-bottom: 20px;
-  
+		
 		div {
 		  flex: 1;
 		  height: 1px;
