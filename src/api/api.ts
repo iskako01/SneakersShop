@@ -9,21 +9,27 @@ const instance = axios.create({
 
 export const cartAPI = {
   getcart() {
-    instance.get<Array<CartType>>("cart");
+    return instance
+      .get<Array<CartType>>("cart")
+      .then((response) => response.data);
   },
 };
 export const sneakersAPI = {
   getSneakers() {
-    instance.get<Array<SneakerType>>("items");
+    return instance
+      .get<Array<SneakerType>>("items")
+      .then((response) => response.data);
   },
 };
 export const favoritesAPI = {
   getFavorites() {
-    instance.get("favorites");
+    return instance.get("favorites").then((response) => response.data);
   },
 };
 export const ordersAPI = {
   getOrders() {
-    instance.get<Array<OrdersType>>("orders");
+    return instance
+      .get<Array<OrdersType>>("orders")
+      .then((response) => response.data);
   },
 };

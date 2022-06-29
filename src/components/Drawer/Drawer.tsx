@@ -3,13 +3,15 @@ import btnRemove from "../../assets/btn-remove.svg";
 import arrow from "../../assets/arrow.svg";
 import styles from "./Drawer.module.scss";
 import DrawerItem from "./DrawerItem";
+import { CartType } from "../../types/cartType";
 
 type PropsType = {
   onClickClose: () => void;
   opened: boolean;
+  cartItems: Array<CartType>;
 };
 
-const Drawer: React.FC<PropsType> = ({ onClickClose, opened }) => {
+const Drawer: React.FC<PropsType> = ({ onClickClose, opened, cartItems }) => {
   return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
       <div className={styles.drawer}>
@@ -22,7 +24,10 @@ const Drawer: React.FC<PropsType> = ({ onClickClose, opened }) => {
             onClick={onClickClose}
           />
         </h3>
-        <DrawerItem />
+
+        {cartItems.map((item) => (
+          <DrawerItem cartItem={item} />
+        ))}
 
         <div className="cartTotalBlock">
           <ul className="cartTotalBlock">
