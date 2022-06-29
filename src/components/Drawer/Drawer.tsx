@@ -1,35 +1,28 @@
 import React from "react";
-import sneakerOne from "../../assets/sneakers/1.jpg";
 import btnRemove from "../../assets/btn-remove.svg";
 import arrow from "../../assets/arrow.svg";
 import styles from "./Drawer.module.scss";
+import DrawerItem from "./DrawerItem";
 
-const CartItem = () => {
-  return (
-    <div className="items">
-      <div className="cartItem d-flex align-center">
-        <img className="mr-20" width={70} height={70} src={sneakerOne} alt="" />
-        <div className="mr-20">
-          <p className="mb-5">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum,
-            eligendi.
-          </p>
-          <p>120 $</p>
-        </div>
-        <img className="removeBtn" src={btnRemove} alt="" />
-      </div>
-    </div>
-  );
+type PropsType = {
+  onClickClose: () => void;
+  opened: boolean;
 };
 
-const Drawer = () => {
+const Drawer: React.FC<PropsType> = ({ onClickClose, opened }) => {
   return (
-    <div className={styles.overlay}>
+    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
       <div className={styles.drawer}>
         <h3 className="d-flex justify-between  mb-30">
-          Cart <img className="removeBtn cu-p" src={btnRemove} alt="" />
+          Cart{" "}
+          <img
+            className="removeBtn cu-p"
+            src={btnRemove}
+            alt="Close"
+            onClick={onClickClose}
+          />
         </h3>
-        <CartItem />
+        <DrawerItem />
 
         <div className="cartTotalBlock">
           <ul className="cartTotalBlock">

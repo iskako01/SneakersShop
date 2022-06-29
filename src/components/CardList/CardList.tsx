@@ -3,7 +3,10 @@ import Card from "./Card/Card";
 
 const CardList = () => {
   return (
-    <div>
+    <div className="d-flex">
+      <Card />;
+      <Card />;
+      <Card />;
       <Card />;
     </div>
   );

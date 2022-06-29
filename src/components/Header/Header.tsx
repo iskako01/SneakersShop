@@ -3,7 +3,11 @@ import logo from "../../assets/logo.png";
 import cart from "../../assets/cart.svg";
 import user from "../../assets/user.svg";
 
-const Header = () => {
+type PropsType = {
+  onCartOpened: () => void;
+};
+
+const Header: React.FC<PropsType> = ({ onCartOpened }) => {
   return (
     <header className="d-flex justify-between  align-center p-40">
       <div className="d-flex  align-center">
@@ -14,7 +18,7 @@ const Header = () => {
         </div>
       </div>
       <ul className="d-flex">
-        <li className="mr-30">
+        <li className="mr-30 cu-p" onClick={onCartOpened}>
           <img src={cart} />
           <span>1209 $</span>
         </li>
