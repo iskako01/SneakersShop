@@ -6,13 +6,28 @@ import { CartType } from "../../types/cartType";
 type PropsType = {
   items: Array<SneakerType>;
   onAddToCart: (cartItem: CartType) => void;
+  onRemoveCartItem: (id: number) => void;
+  searchValue: string;
 };
 
-const CardList: React.FC<PropsType> = ({ items, onAddToCart }) => {
+const CardList: React.FC<PropsType> = ({
+  items,
+  onAddToCart,
+  onRemoveCartItem,
+  searchValue,
+}) => {
+  const sneackerSearch = items.filter((item) => {
+    return item.title.toUpperCase().includes(searchValue?.toUpperCase());
+  });
   return (
     <div className="d-flex flex-wrap mt-40">
-      {items.map((item) => (
-        <Card item={item} key={item.id} onAddToCart={onAddToCart} />
+      {sneackerSearch.map((item) => (
+        <Card
+          item={item}
+          key={item.id}
+          onAddToCart={onAddToCart}
+          onRemoveCartItem={onRemoveCartItem}
+        />
       ))}
     </div>
   );

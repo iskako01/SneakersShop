@@ -13,7 +13,11 @@ export const cartAPI = {
       .get<Array<CartType>>("cart")
       .then((response) => response.data);
   },
+  addTocart(item: CartType) {
+    return instance.post("cart", item);
+  },
 };
+
 export const sneakersAPI = {
   getSneakers() {
     return instance
@@ -21,11 +25,13 @@ export const sneakersAPI = {
       .then((response) => response.data);
   },
 };
+
 export const favoritesAPI = {
   getFavorites() {
     return instance.get("favorites").then((response) => response.data);
   },
 };
+
 export const ordersAPI = {
   getOrders() {
     return instance

@@ -5,9 +5,10 @@ import styles from "./Drawer.module.scss";
 
 type PropsType = {
   cartItem: CartType;
+  onRemoveCartItem: (id: number) => void;
 };
 
-const DrawerItem: React.FC<PropsType> = ({ cartItem }) => {
+const DrawerItem: React.FC<PropsType> = ({ cartItem, onRemoveCartItem }) => {
   return (
     <div className="items">
       <div className="cartItem d-flex align-center">
@@ -22,7 +23,12 @@ const DrawerItem: React.FC<PropsType> = ({ cartItem }) => {
           <p className="mb-5">{cartItem.title}</p>
           <p>{cartItem.price} $</p>
         </div>
-        <img className="removeBtn" src={btnRemove} alt="Close" />
+        <img
+          className="removeBtn"
+          onClick={() => onRemoveCartItem(cartItem.id)}
+          src={btnRemove}
+          alt="Remove"
+        />
       </div>
     </div>
   );

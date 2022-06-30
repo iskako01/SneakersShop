@@ -9,12 +9,13 @@ import { CartType } from "../../../types/cartType";
 type PropsType = {
   item: SneakerType;
   onAddToCart: (cartItem: CartType) => void;
+  onRemoveCartItem: (id: number) => void;
 };
 
-const Card: React.FC<PropsType> = ({ item, onAddToCart }) => {
+const Card: React.FC<PropsType> = ({ item, onAddToCart, onRemoveCartItem }) => {
   const [isAdded, setIsAdded] = useState<boolean>(false);
 
-  const onSneakerAdd = () => {
+  const onAddItemToCart = () => {
     onAddToCart(item);
     setIsAdded(!isAdded);
   };
@@ -35,7 +36,7 @@ const Card: React.FC<PropsType> = ({ item, onAddToCart }) => {
 
         <img
           className="cu-p"
-          onClick={onSneakerAdd}
+          onClick={onAddItemToCart}
           src={isAdded ? btnChecked : btnPlus}
           alt="Plus"
         />

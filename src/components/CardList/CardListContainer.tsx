@@ -6,9 +6,15 @@ import CardList from "./CardList";
 
 type PropsType = {
   onAddToCart: (cartItem: CartType) => void;
+  onRemoveCartItem: (id: number) => void;
+  searchValue: string;
 };
 
-const CardListConatainer: React.FC<PropsType> = ({ onAddToCart }) => {
+const CardListConatainer: React.FC<PropsType> = ({
+  onAddToCart,
+  onRemoveCartItem,
+  searchValue,
+}) => {
   const [items, setIems] = useState<Array<SneakerType>>([]);
 
   const getSneakers = async () => {
@@ -20,7 +26,14 @@ const CardListConatainer: React.FC<PropsType> = ({ onAddToCart }) => {
     getSneakers();
   }, []);
 
-  return <CardList onAddToCart={onAddToCart} items={items} />;
+  return (
+    <CardList
+      onAddToCart={onAddToCart}
+      onRemoveCartItem={onRemoveCartItem}
+      items={items}
+      searchValue={searchValue}
+    />
+  );
 };
 
 export default CardListConatainer;

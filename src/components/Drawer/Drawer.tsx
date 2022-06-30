@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import btnRemove from "../../assets/btn-remove.svg";
 import arrow from "../../assets/arrow.svg";
 import styles from "./Drawer.module.scss";
 import DrawerItem from "./DrawerItem";
 import { CartType } from "../../types/cartType";
+import { cartAPI } from "../../api/api";
 
 type PropsType = {
   onClickClose: () => void;
   opened: boolean;
   cartItems: Array<CartType>;
+  onRemoveCartItem: (id: number) => void;
+  setCartItems: (cartItem: CartType[]) => void;
 };
 
-const Drawer: React.FC<PropsType> = ({ onClickClose, opened, cartItems }) => {
+const Drawer: React.FC<PropsType> = ({
+  onClickClose,
+  opened,
+  cartItems,
+  onRemoveCartItem,
+  setCartItems,
+}) => {
+  const getSneakers = async () => {
+    const data = await cartAPI.getcart();
+    setCartItems(data);
+  };
+
+  useEffect(() => {
+    getSneakers();
+  }, []);
+
   return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
       <div className={styles.drawer}>
@@ -26,11 +44,11 @@ const Drawer: React.FC<PropsType> = ({ onClickClose, opened, cartItems }) => {
         </h3>
 
         {cartItems.map((item) => (
-          <DrawerItem cartItem={item} />
+          <DrawerItem onRemoveCartItem={onRemoveCartItem} cartItem={item} />
         ))}
 
         <div className="cartTotalBlock">
-          <ul className="cartTotalBlock">
+          <ul className="">
             <li className="d-flex">
               <span>Total:</span>
               <div></div>
