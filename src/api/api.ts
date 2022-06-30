@@ -13,8 +13,11 @@ export const cartAPI = {
       .get<Array<CartType>>("cart")
       .then((response) => response.data);
   },
-  addTocart(item: CartType) {
+  addItemTocart(item: CartType) {
     return instance.post("cart", item);
+  },
+  removeItemCart(id: number) {
+    return instance.delete(`cart/${id}`);
   },
 };
 
@@ -29,6 +32,12 @@ export const sneakersAPI = {
 export const favoritesAPI = {
   getFavorites() {
     return instance.get("favorites").then((response) => response.data);
+  },
+  addFavorites(item: SneakerType) {
+    return instance.post("favorites", item);
+  },
+  removeFavorites(id: number) {
+    return instance.delete(`favorites/${id}`);
   },
 };
 

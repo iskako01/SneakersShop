@@ -11,7 +11,7 @@ type PropsType = {
 const DrawerItem: React.FC<PropsType> = ({ cartItem, onRemoveCartItem }) => {
   return (
     <div className="items">
-      <div className="cartItem d-flex align-center">
+      <div className="cartItem d-flex align-center mb-20">
         <img
           className="mr-20"
           width={70}

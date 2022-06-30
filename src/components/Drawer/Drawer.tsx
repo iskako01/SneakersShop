@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import btnRemove from "../../assets/btn-remove.svg";
 import arrow from "../../assets/arrow.svg";
 import styles from "./Drawer.module.scss";
+import empty from "../../assets/empty-cart.png";
 import DrawerItem from "./DrawerItem";
 import { CartType } from "../../types/cartType";
 import { cartAPI } from "../../api/api";
@@ -43,8 +44,29 @@ const Drawer: React.FC<PropsType> = ({
           />
         </h3>
 
+        {cartItems.length === 0 && (
+          <div className="cartEmpty d-flex align-center justify-center flex-column flex">
+            <img
+              className="mb-20"
+              width={120}
+              height={120}
+              src={empty}
+              alt="Cart is empty"
+            />
+            <h2>The cart is empty</h2>
+            <p className="opacity-5">Add at least one product</p>
+            <button className="greenButton" onClick={onClickClose}>
+              <img src={arrow} alt="Arrow" /> Back
+            </button>
+          </div>
+        )}
+
         {cartItems.map((item) => (
-          <DrawerItem onRemoveCartItem={onRemoveCartItem} cartItem={item} />
+          <DrawerItem
+            onRemoveCartItem={onRemoveCartItem}
+            key={item.id}
+            cartItem={item}
+          />
         ))}
 
         <div className="cartTotalBlock">
