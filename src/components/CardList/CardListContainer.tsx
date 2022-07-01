@@ -6,12 +6,14 @@ import CardList from "./CardList";
 
 type PropsType = {
   onAddToCart: (cartItem: CartType) => void;
-  onRemoveCartItem: (id: number) => void;
+  onAddToFavorites: (item: SneakerType) => void;
+  onRemoveItemFavorites: (id: number) => void;
 };
 
 const CardListConatainer: React.FC<PropsType> = ({
   onAddToCart,
-  onRemoveCartItem,
+  onAddToFavorites,
+  onRemoveItemFavorites,
 }) => {
   const [items, setIems] = useState<Array<SneakerType>>([]);
 
@@ -27,7 +29,8 @@ const CardListConatainer: React.FC<PropsType> = ({
   return (
     <CardList
       onAddToCart={onAddToCart}
-      onRemoveCartItem={onRemoveCartItem}
+      onAddToFavorites={onAddToFavorites}
+      onRemoveItemFavorites={onRemoveItemFavorites}
       items={items}
     />
   );

@@ -11,27 +11,43 @@ import { favoritesAPI } from "../../../api/api";
 type PropsType = {
   item: SneakerType;
   onAddToCart: (cartItem: CartType) => void;
-  onRemoveCartItem: (id: number) => void;
+  onAddToFavorites: (item: SneakerType) => void;
+  onRemoveItemFavorites: (id: number) => void;
+  favorited: boolean;
 };
 
-const Card: React.FC<PropsType> = ({ item, onAddToCart, onRemoveCartItem }) => {
+const Card: React.FC<PropsType> = ({
+  item,
+  onAddToCart,
+  onAddToFavorites,
+  onRemoveItemFavorites,
+  favorited,
+}) => {
   const [isAdded, setIsAdded] = useState<boolean>(false);
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
-  const [favorites, setFavorites] = useState<Array<SneakerType>>([]);
+  const [isFavorite, setIsFavorite] = useState<boolean>(favorited);
+  //   const [favorites, setFavorites] = useState<Array<SneakerType>>([]);
 
-  const onAddToFavorites = (item: SneakerType) => {
+  //   const onAddToFavorites = (item: SneakerType) => {
+  //     setIsFavorite(!isFavorite);
+  //     if (isFavorite) {
+  //       favoritesAPI.removeFavorites(item.id);
+  //       setFavorites((prev) => [...prev, item]);
+  //     } else {
+  //       favoritesAPI.addFavorites(item);
+  //       setFavorites((prev) => [...prev, item]);
+  //     }
+  //   };
+
+  //   const getItemsFavorites = () => {
+  //     favoritesAPI.getFavorites().then((data) => setFavorites(data));
+  //   };
+  const onClickFavorite = (item: SneakerType) => {
     setIsFavorite(!isFavorite);
     if (isFavorite) {
-      favoritesAPI.removeFavorites(item.id);
-      setFavorites((prev) => [...prev, item]);
+      onRemoveItemFavorites(item.id);
     } else {
-      favoritesAPI.addFavorites(item);
-      setFavorites((prev) => [...prev, item]);
+      onAddToFavorites(item);
     }
-  };
-
-  const getItemsFavorites = () => {
-    favoritesAPI.getFavorites().then((data) => setFavorites(data));
   };
 
   const onAddItemToCart = () => {
@@ -39,15 +55,15 @@ const Card: React.FC<PropsType> = ({ item, onAddToCart, onRemoveCartItem }) => {
     setIsAdded(!isAdded);
   };
 
-  useEffect(() => {
-    getItemsFavorites();
-  }, []);
+  //   useEffect(() => {
+  //     getItemsFavorites();
+  //   }, []);
 
   return (
     <div className={styles.card}>
       <div className={styles.favorite}>
         <img
-          onClick={() => onAddToFavorites(item)}
+          onClick={() => onClickFavorite(item)}
           src={isFavorite ? liked : unliked}
           alt="Unliked"
         />

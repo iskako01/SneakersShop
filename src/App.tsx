@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
-import Search from "./components/Search/Search";
 import Drawer from "./components/Drawer/Drawer";
 import CardListConatainer from "./components/CardList/CardListContainer";
 import Favorites from "./components/Favorites/Favorites";
 import { CartType } from "./types/cartType";
-import { cartAPI } from "./api/api";
+import { cartAPI, favoritesAPI } from "./api/api";
 import { Route, Routes } from "react-router-dom";
+import { SneakerType } from "./types/sneakerType";
 
 function App() {
   const [opened, setOpened] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<Array<CartType>>([]);
+  const [favorites, setFavorites] = useState<Array<SneakerType>>([]);
 
   const onAddToCart = (cartItem: CartType) => {
     cartAPI.addItemTocart(cartItem);
@@ -23,18 +24,43 @@ function App() {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const onAddToFavorites = async (item: SneakerType) => {
+    try {
+      const { data } = await favoritesAPI.addFavorites(item);
+      setFavorites((prev) => [...prev, data]);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const onRemoveItemFavorites = (id: number) => {
+    favoritesAPI.removeFavorites(id);
+    setFavorites((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
     <div className="wrapper">
       <Header onCartOpened={() => setOpened(true)} />
 
       <Routes>
-        <Route path="/favorites" element={<Favorites />} />
+        <Route
+          path="/favorites"
+          element={
+            <Favorites
+              favorites={favorites}
+              onAddToFavorites={onAddToFavorites}
+              onAddToCart={onAddToCart}
+              onRemoveItemFavorites={onRemoveItemFavorites}
+            />
+          }
+        />
         <Route
           path="/*"
           element={
             <CardListConatainer
               onAddToCart={onAddToCart}
-              onRemoveCartItem={onRemoveCartItem}
+              onAddToFavorites={onAddToFavorites}
+              onRemoveItemFavorites={onRemoveItemFavorites}
             />
           }
         />

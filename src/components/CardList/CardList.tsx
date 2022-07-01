@@ -7,13 +7,15 @@ import Search from "../Search/Search";
 type PropsType = {
   items: Array<SneakerType>;
   onAddToCart: (cartItem: CartType) => void;
-  onRemoveCartItem: (id: number) => void;
+  onAddToFavorites: (item: SneakerType) => void;
+  onRemoveItemFavorites: (id: number) => void;
 };
 
 const CardList: React.FC<PropsType> = ({
   items,
   onAddToCart,
-  onRemoveCartItem,
+  onAddToFavorites,
+  onRemoveItemFavorites
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -35,7 +37,9 @@ const CardList: React.FC<PropsType> = ({
             item={item}
             key={item.id}
             onAddToCart={onAddToCart}
-            onRemoveCartItem={onRemoveCartItem}
+            onAddToFavorites={onAddToFavorites}
+            onRemoveItemFavorites={onRemoveItemFavorites}
+            favorited={false}
           />
         ))}
       </div>
