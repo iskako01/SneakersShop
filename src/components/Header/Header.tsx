@@ -33,7 +33,9 @@ const Header: React.FC<PropsType> = ({ onCartOpened }) => {
           </Link>
         </li>
         <li>
-          <img src={user} />
+          <Link to={"/orders"}>
+            <img src={user} />
+          </Link>
         </li>
       </ul>
     </header>

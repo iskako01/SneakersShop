@@ -12,7 +12,6 @@ type PropsType = {
   opened: boolean;
   cartItems: Array<CartType>;
   onRemoveCartItem: (id: number) => void;
-  setCartItems: (cartItem: CartType[]) => void;
 };
 
 const Drawer: React.FC<PropsType> = ({
@@ -20,17 +19,7 @@ const Drawer: React.FC<PropsType> = ({
   opened,
   cartItems,
   onRemoveCartItem,
-  setCartItems,
 }) => {
-  const getSneakers = async () => {
-    const data = await cartAPI.getcart();
-    setCartItems(data);
-  };
-
-  useEffect(() => {
-    getSneakers();
-  }, []);
-
   return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
       <div className={styles.drawer}>

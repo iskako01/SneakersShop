@@ -1,25 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Card from "./Card/Card";
 import { SneakerType } from "../../types/sneakerType";
 import { CartType } from "../../types/cartType";
+
 import Search from "../Search/Search";
+import { AppContext } from "../../App";
 
 type PropsType = {
-  items: Array<SneakerType>;
   onAddToCart: (cartItem: CartType) => void;
   onAddToFavorites: (item: SneakerType) => void;
   onRemoveItemFavorites: (id: number) => void;
+  onRemoveCartItem: (id: number) => void;
+  loading: boolean;
 };
 
 const CardList: React.FC<PropsType> = ({
-  items,
   onAddToCart,
   onAddToFavorites,
-  onRemoveItemFavorites
+  onRemoveItemFavorites,
+  onRemoveCartItem,
+
+  loading,
 }) => {
   const [searchValue, setSearchValue] = useState("");
+  const context = useContext(AppContext);
 
-  const sneackerSearch = items.filter((item) => {
+  const sneackerSearch = context.items.filter((item) => {
     return item.title.toUpperCase().includes(searchValue?.toUpperCase());
   });
 
@@ -39,7 +45,12 @@ const CardList: React.FC<PropsType> = ({
             onAddToCart={onAddToCart}
             onAddToFavorites={onAddToFavorites}
             onRemoveItemFavorites={onRemoveItemFavorites}
+            onRemoveCartItem={onRemoveCartItem}
             favorited={false}
+            loading={loading}
+            added={context.cartItems.some(
+              (cartItem) => Number(cartItem.id) === Number(item.id)
+            )}
           />
         ))}
       </div>
