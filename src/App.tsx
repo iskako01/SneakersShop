@@ -14,12 +14,22 @@ type AppContextType = {
   items: SneakerType[];
   cartItems: CartType[];
   favorites: SneakerType[];
+  isItemAdded: (id: number) => boolean;
+  onAddToFavorites: (item: SneakerType) => void;
+  onAddToCart: (item: CartType) => void;
+  onRemoveItemFavorites: (id: number) => void;
+  onRemoveCartItem: (id: number) => void;
 };
 
 export const AppContext = createContext<AppContextType>({
   items: [],
   cartItems: [],
   favorites: [],
+  isItemAdded: () => false,
+  onAddToFavorites: (item: SneakerType) => {},
+  onAddToCart: (item: CartType) => {},
+  onRemoveItemFavorites: (id: number) => {},
+  onRemoveCartItem: (id: number) => {},
 });
 
 function App() {
@@ -69,39 +79,32 @@ function App() {
     setFavorites((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const isItemAdded = (id: number) => {
+    return cartItems.some((cartItem) => Number(cartItem.id) === Number(id));
+  };
+
   return (
-    <AppContext.Provider value={{ items, favorites, cartItems }}>
+    <AppContext.Provider
+      value={{
+        items,
+        favorites,
+        cartItems,
+        isItemAdded,
+        onAddToFavorites,
+        onAddToCart,
+        onRemoveItemFavorites,
+        onRemoveCartItem,
+      }}
+    >
       <div className="wrapper">
         <Header onCartOpened={() => setOpened(true)} />
 
         <Routes>
-          <Route
-            path="/favorites"
-            element={
-              <Favorites
-                onAddToFavorites={onAddToFavorites}
-                onAddToCart={onAddToCart}
-                onRemoveItemFavorites={onRemoveItemFavorites}
-                onRemoveCartItem={onRemoveCartItem}
-                loading={loading}
-              />
-            }
-          />
+          <Route path="/favorites" element={<Favorites loading={loading} />} />
 
           <Route path="/orders" element={<Orders />} />
 
-          <Route
-            path="/*"
-            element={
-              <CardListConatainer
-                onAddToCart={onAddToCart}
-                onAddToFavorites={onAddToFavorites}
-                onRemoveItemFavorites={onRemoveItemFavorites}
-                onRemoveCartItem={onRemoveCartItem}
-                loading={loading}
-              />
-            }
-          />
+          <Route path="/*" element={<CardListConatainer loading={loading} />} />
         </Routes>
 
         {opened && (

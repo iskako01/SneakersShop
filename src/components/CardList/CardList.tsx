@@ -7,25 +7,14 @@ import Search from "../Search/Search";
 import { AppContext } from "../../App";
 
 type PropsType = {
-  onAddToCart: (cartItem: CartType) => void;
-  onAddToFavorites: (item: SneakerType) => void;
-  onRemoveItemFavorites: (id: number) => void;
-  onRemoveCartItem: (id: number) => void;
   loading: boolean;
 };
 
-const CardList: React.FC<PropsType> = ({
-  onAddToCart,
-  onAddToFavorites,
-  onRemoveItemFavorites,
-  onRemoveCartItem,
-
-  loading,
-}) => {
+const CardList: React.FC<PropsType> = ({ loading }) => {
   const [searchValue, setSearchValue] = useState("");
-  const context = useContext(AppContext);
+  const { items } = useContext(AppContext);
 
-  const sneackerSearch = context.items.filter((item) => {
+  const sneackerSearch = items.filter((item) => {
     return item.title.toUpperCase().includes(searchValue?.toUpperCase());
   });
 
@@ -39,19 +28,7 @@ const CardList: React.FC<PropsType> = ({
       </div>
       <div className="d-flex flex-wrap mt-40">
         {sneackerSearch.map((item) => (
-          <Card
-            item={item}
-            key={item.id}
-            onAddToCart={onAddToCart}
-            onAddToFavorites={onAddToFavorites}
-            onRemoveItemFavorites={onRemoveItemFavorites}
-            onRemoveCartItem={onRemoveCartItem}
-            favorited={false}
-            loading={loading}
-            added={context.cartItems.some(
-              (cartItem) => Number(cartItem.id) === Number(item.id)
-            )}
-          />
+          <Card item={item} key={item.id} favorited={false} loading={loading} />
         ))}
       </div>
       /

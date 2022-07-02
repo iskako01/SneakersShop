@@ -5,22 +5,11 @@ import { AppContext } from "../../App";
 import Card from "../CardList/Card/Card";
 
 type PropsType = {
-  onAddToFavorites: (item: SneakerType) => void;
-  onAddToCart: (cartItem: CartType) => void;
-  onRemoveItemFavorites: (id: number) => void;
-  onRemoveCartItem: (id: number) => void;
-
   loading: boolean;
 };
 
-const Favorites: React.FC<PropsType> = ({
-  onAddToFavorites,
-  onRemoveItemFavorites,
-  onAddToCart,
-  onRemoveCartItem,
-  loading,
-}) => {
-  const context = useContext(AppContext);
+const Favorites: React.FC<PropsType> = ({ loading }) => {
+  const { favorites } = useContext(AppContext);
 
   return (
     <div className="content p-40">
@@ -29,20 +18,8 @@ const Favorites: React.FC<PropsType> = ({
       </div>
 
       <div className="d-flex flex-wrap">
-        {context.favorites.map((item) => (
-          <Card
-            key={item.id}
-            favorited={true}
-            onAddToFavorites={onAddToFavorites}
-            onRemoveItemFavorites={onRemoveItemFavorites}
-            onRemoveCartItem={onRemoveCartItem}
-            item={item}
-            onAddToCart={onAddToCart}
-            loading={loading}
-            added={context.cartItems.some(
-              (cartItem) => cartItem.id === item.id
-            )}
-          />
+        {favorites.map((item) => (
+          <Card key={item.id} favorited={true} item={item} loading={loading} />
         ))}
       </div>
     </div>

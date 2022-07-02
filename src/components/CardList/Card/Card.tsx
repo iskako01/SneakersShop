@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import btnPlus from "../../../assets/btn-plus.svg";
 import btnChecked from "../../../assets/btn-checked.svg";
 import unliked from "../../../assets/unliked.svg";
@@ -7,29 +7,30 @@ import styles from "./Card.module.scss";
 import { SneakerType } from "../../../types/sneakerType";
 import { CartType } from "../../../types/cartType";
 import ContentLoader from "react-content-loader";
+import { AppContext } from "../../../App";
 
 type PropsType = {
   item: SneakerType;
-  onAddToCart: (cartItem: CartType) => void;
-  onAddToFavorites: (item: SneakerType) => void;
-  onRemoveItemFavorites: (id: number) => void;
-  onRemoveCartItem: (id: number) => void;
+
   favorited: boolean;
-  added: boolean;
   loading: boolean;
 };
 
 const Card: React.FC<PropsType> = ({
   item,
-  onAddToCart,
-  onAddToFavorites,
-  onRemoveItemFavorites,
+
   favorited,
-  onRemoveCartItem,
-  added,
+
   loading,
 }) => {
-  const [isAdded, setIsAdded] = useState<boolean>(added);
+  //   const [isAdded, setIsAdded] = useState<boolean>(false);
+  const {
+    isItemAdded,
+    onAddToFavorites,
+    onAddToCart,
+    onRemoveItemFavorites,
+    onRemoveCartItem,
+  } = useContext(AppContext);
   const [isFavorite, setIsFavorite] = useState<boolean>(favorited);
 
   const onClickFavorite = (item: SneakerType) => {
@@ -42,8 +43,7 @@ const Card: React.FC<PropsType> = ({
   };
 
   const onAddItemToCart = () => {
-    setIsAdded(!isAdded);
-    if (isAdded) {
+    if (isItemAdded(item.id)) {
       onRemoveCartItem(item.id);
     } else {
       onAddToCart(item);
@@ -88,7 +88,7 @@ const Card: React.FC<PropsType> = ({
             <img
               className="cu-p"
               onClick={onAddItemToCart}
-              src={isAdded ? btnChecked : btnPlus}
+              src={isItemAdded(item.id) ? btnChecked : btnPlus}
               alt="Plus"
             />
           </div>
