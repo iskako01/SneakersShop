@@ -19,6 +19,7 @@ export const cartAPI = {
   removeItemCart(id: number) {
     return instance.delete(`cart/${id}`);
   },
+
 };
 
 export const sneakersAPI = {
@@ -46,5 +47,11 @@ export const ordersAPI = {
     return instance
       .get<Array<OrdersType>>("orders")
       .then((response) => response.data);
+  },
+  addOrder(item: OrdersType) {
+    return instance.post("orders", item);
+  },
+  removeOrder(id: number) {
+    return instance.delete(`orders/${id}`);
   },
 };

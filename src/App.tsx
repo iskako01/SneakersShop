@@ -19,6 +19,7 @@ type AppContextType = {
   onAddToCart: (item: CartType) => void;
   onRemoveItemFavorites: (id: number) => void;
   onRemoveCartItem: (id: number) => void;
+  onCloseCart: () => void;
 };
 
 export const AppContext = createContext<AppContextType>({
@@ -30,6 +31,7 @@ export const AppContext = createContext<AppContextType>({
   onAddToCart: (item: CartType) => {},
   onRemoveItemFavorites: (id: number) => {},
   onRemoveCartItem: (id: number) => {},
+  onCloseCart: () => {},
 });
 
 function App() {
@@ -58,11 +60,22 @@ function App() {
     setCartItems((prev) => [...prev, cartItem]);
   };
 
+  const onCloseCart = () => {
+    setOpened(false);
+  };
+
   const onRemoveCartItem = (id: number) => {
     cartAPI.removeItemCart(id);
     console.log("removeItemCart");
 
     setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+    cartItems.forEach((item) => {
+      cartAPI.removeItemCart(item.id!);
+    });
   };
 
   const onAddToFavorites = async (item: SneakerType) => {
@@ -94,6 +107,7 @@ function App() {
         onAddToCart,
         onRemoveItemFavorites,
         onRemoveCartItem,
+        onCloseCart,
       }}
     >
       <div className="wrapper">
@@ -110,9 +124,10 @@ function App() {
         {opened && (
           <Drawer
             opened={opened}
-            onClickClose={() => setOpened(false)}
+            onCloseCart={onCloseCart}
             onRemoveCartItem={onRemoveCartItem}
             cartItems={cartItems}
+            clearCart={clearCart}
           />
         )}
       </div>

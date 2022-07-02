@@ -1,25 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import btnRemove from "../../assets/btn-remove.svg";
 import arrow from "../../assets/arrow.svg";
 import styles from "./Drawer.module.scss";
 import empty from "../../assets/empty-cart.png";
+import orderComplete from "../../assets/complete-order.png";
 import DrawerItem from "./DrawerItem";
 import { CartType } from "../../types/cartType";
-import { cartAPI } from "../../api/api";
+import { ordersAPI } from "../../api/api";
+import Info from "../Info/Info";
 
 type PropsType = {
-  onClickClose: () => void;
+  onCloseCart: () => void;
   opened: boolean;
   cartItems: Array<CartType>;
   onRemoveCartItem: (id: number) => void;
+  clearCart: () => void;
 };
 
 const Drawer: React.FC<PropsType> = ({
-  onClickClose,
+  onCloseCart,
   opened,
   cartItems,
   onRemoveCartItem,
+  clearCart,
 }) => {
+  const [isOrderComplete, setOrderComplete] = useState<boolean>(false);
+
+  const onClickOrder = () => {
+    ordersAPI.addOrder({
+      items: cartItems,
+      id: "",
+    });
+    setOrderComplete(true);
+    clearCart();
+  };
+
   return (
     <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
       <div className={styles.drawer}>
@@ -29,48 +44,45 @@ const Drawer: React.FC<PropsType> = ({
             className="removeBtn cu-p"
             src={btnRemove}
             alt="Close"
-            onClick={onClickClose}
+            onClick={onCloseCart}
           />
         </h3>
 
-        {cartItems.length === 0 && (
-          <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-            <img
-              className="mb-20"
-              width={120}
-              height={120}
-              src={empty}
-              alt="Cart is empty"
-            />
-            <h2>The cart is empty</h2>
-            <p className="opacity-5">Add at least one product</p>
-            <button className="greenButton" onClick={onClickClose}>
-              <img src={arrow} alt="Arrow" /> Back
-            </button>
+        {cartItems.length === 0 ? (
+          <Info
+            title={isOrderComplete ? "Order is placed" : "Cart is empty"}
+            description={
+              isOrderComplete
+                ? "Your order will soon be handed over to the courier service"
+                : "Add product to cart"
+            }
+            image={isOrderComplete ? orderComplete : empty}
+          />
+        ) : (
+          <div>
+            {cartItems.map((item) => (
+              <DrawerItem
+                onRemoveCartItem={onRemoveCartItem}
+                key={item.id}
+                cartItem={item}
+              />
+            ))}
+
+            <div className="cartTotalBlock">
+              <ul className="">
+                <li className="d-flex">
+                  <span>Total:</span>
+                  <div></div>
+                  <b>120 $</b>
+                </li>
+              </ul>
+
+              <button className="greenButton" onClick={onClickOrder}>
+                Place an order <img src={arrow} alt="Arrow" />
+              </button>
+            </div>
           </div>
         )}
-
-        {cartItems.map((item) => (
-          <DrawerItem
-            onRemoveCartItem={onRemoveCartItem}
-            key={item.id}
-            cartItem={item}
-          />
-        ))}
-
-        <div className="cartTotalBlock">
-          <ul className="">
-            <li className="d-flex">
-              <span>Total:</span>
-              <div></div>
-              <b>120 $</b>
-            </li>
-          </ul>
-
-          <button className="greenButton">
-            Place an order <img src={arrow} alt="Arrow" />
-          </button>
-        </div>
       </div>
     </div>
   );

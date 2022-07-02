@@ -1,6 +1,6 @@
 export type SneakerType = {
-  id: number;
-  title: string;
-  price: number;
-  imageUrl: string;
+  id: number | null;
+  title: string | null;
+  price: number | null;
+  imageUrl: string | null;
 };

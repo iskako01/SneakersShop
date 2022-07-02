@@ -11,7 +11,6 @@ import { AppContext } from "../../../App";
 
 type PropsType = {
   item: SneakerType;
-
   favorited: boolean;
   loading: boolean;
 };
@@ -36,15 +35,15 @@ const Card: React.FC<PropsType> = ({
   const onClickFavorite = (item: SneakerType) => {
     setIsFavorite(!isFavorite);
     if (isFavorite) {
-      onRemoveItemFavorites(item.id);
+      onRemoveItemFavorites(item.id!);
     } else {
       onAddToFavorites(item);
     }
   };
 
   const onAddItemToCart = () => {
-    if (isItemAdded(item.id)) {
-      onRemoveCartItem(item.id);
+    if (isItemAdded(item.id!)) {
+      onRemoveCartItem(item.id!);
     } else {
       onAddToCart(item);
     }
@@ -77,7 +76,7 @@ const Card: React.FC<PropsType> = ({
             />
           </div>
 
-          <img width={133} height={112} src={item.imageUrl} alt="" />
+          <img width={133} height={112} src={item.imageUrl!} alt="" />
           <h5>{item.title}</h5>
           <div className="d-flex justify-between  align-center">
             <div className="d-flex flex-column">
@@ -88,7 +87,7 @@ const Card: React.FC<PropsType> = ({
             <img
               className="cu-p"
               onClick={onAddItemToCart}
-              src={isItemAdded(item.id) ? btnChecked : btnPlus}
+              src={isItemAdded(item.id!) ? btnChecked : btnPlus}
               alt="Plus"
             />
           </div>

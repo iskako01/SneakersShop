@@ -15,7 +15,7 @@ const CardList: React.FC<PropsType> = ({ loading }) => {
   const { items } = useContext(AppContext);
 
   const sneackerSearch = items.filter((item) => {
-    return item.title.toUpperCase().includes(searchValue?.toUpperCase());
+    return item.title!.toUpperCase().includes(searchValue?.toUpperCase());
   });
 
   return (
