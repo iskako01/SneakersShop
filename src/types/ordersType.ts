@@ -1,6 +1,6 @@
 import { CartType } from "./cartType";
 
 export type OrdersType = {
-  id: string | number | null;
+  id: string | number ;
   items: Array<CartType>;
 };

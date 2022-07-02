@@ -1,7 +1,7 @@
 export type CartType = {
-  id: number | null;
-  parentId?: number | null;
-  title: string | null;
-  imageUrl: string | null;
-  price: number | null;
+  id: number;
+  parentId?: number;
+  title: string;
+  imageUrl: string;
+  price: number;
 };

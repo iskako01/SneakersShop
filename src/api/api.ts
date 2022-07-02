@@ -19,7 +19,6 @@ export const cartAPI = {
   removeItemCart(id: number) {
     return instance.delete(`cart/${id}`);
   },
-
 };
 
 export const sneakersAPI = {

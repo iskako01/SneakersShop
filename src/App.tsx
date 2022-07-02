@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Drawer from "./components/Drawer/Drawer";
-import CardListConatainer from "./components/CardList/CardListContainer";
+import CardList from "./components/CardList/CardList";
 import Favorites from "./components/Favorites/Favorites";
 import Orders from "./components/Orders/Orders";
 import { CartType } from "./types/cartType";
@@ -43,14 +43,23 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const cartsData = await cartAPI.getcart();
-      const sneakersData = await sneakersAPI.getSneakers();
-      const favoritesData = await favoritesAPI.getFavorites();
-      setLoading(false);
-      setCartItems(cartsData);
-      setFavorites(favoritesData);
-      setItems(sneakersData);
+      try {
+        setLoading(true);
+
+        const [cartsData, sneakersData, favoritesData] = await Promise.all([
+          cartAPI.getcart(),
+          sneakersAPI.getSneakers(),
+          favoritesAPI.getFavorites(),
+        ]);
+
+        setLoading(false);
+
+        setCartItems(cartsData);
+        setFavorites(favoritesData);
+        setItems(sneakersData);
+      } catch (error) {
+        alert(error);
+      }
     };
     fetchData();
   }, []);
@@ -96,6 +105,11 @@ function App() {
     return cartItems.some((cartItem) => Number(cartItem.id) === Number(id));
   };
 
+  const totalPrice: number = cartItems.reduce(
+    (sum, item) => item.price! + sum,
+    0
+  );
+
   return (
     <AppContext.Provider
       value={{
@@ -111,14 +125,14 @@ function App() {
       }}
     >
       <div className="wrapper">
-        <Header onCartOpened={() => setOpened(true)} />
+        <Header onCartOpened={() => setOpened(true)} totalPrice={totalPrice} />
 
         <Routes>
           <Route path="/favorites" element={<Favorites loading={loading} />} />
 
           <Route path="/orders" element={<Orders />} />
 
-          <Route path="/*" element={<CardListConatainer loading={loading} />} />
+          <Route path="/*" element={<CardList loading={loading} />} />
         </Routes>
 
         {opened && (
@@ -128,6 +142,7 @@ function App() {
             onRemoveCartItem={onRemoveCartItem}
             cartItems={cartItems}
             clearCart={clearCart}
+            totalPrice={totalPrice}
           />
         )}
       </div>

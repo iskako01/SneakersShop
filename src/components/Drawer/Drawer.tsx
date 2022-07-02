@@ -10,11 +10,12 @@ import { ordersAPI } from "../../api/api";
 import Info from "../Info/Info";
 
 type PropsType = {
-  onCloseCart: () => void;
   opened: boolean;
   cartItems: Array<CartType>;
+  totalPrice: number;
   onRemoveCartItem: (id: number) => void;
   clearCart: () => void;
+  onCloseCart: () => void;
 };
 
 const Drawer: React.FC<PropsType> = ({
@@ -23,6 +24,7 @@ const Drawer: React.FC<PropsType> = ({
   cartItems,
   onRemoveCartItem,
   clearCart,
+  totalPrice,
 }) => {
   const [isOrderComplete, setOrderComplete] = useState<boolean>(false);
 
@@ -73,7 +75,7 @@ const Drawer: React.FC<PropsType> = ({
                 <li className="d-flex">
                   <span>Total:</span>
                   <div></div>
-                  <b>120 $</b>
+                  <b>{totalPrice} $</b>
                 </li>
               </ul>
 

@@ -6,10 +6,11 @@ import user from "../../assets/user.svg";
 import favorite from "../../assets/heart.svg";
 
 type PropsType = {
+  totalPrice: number;
   onCartOpened: () => void;
 };
 
-const Header: React.FC<PropsType> = ({ onCartOpened }) => {
+const Header: React.FC<PropsType> = ({ totalPrice, onCartOpened }) => {
   return (
     <header className="d-flex justify-between  align-center p-40">
       <div className="d-flex  align-center">
@@ -25,7 +26,7 @@ const Header: React.FC<PropsType> = ({ onCartOpened }) => {
       <ul className="d-flex">
         <li className="mr-30 cu-p" onClick={onCartOpened}>
           <img src={cart} />
-          <span>1209 $</span>
+          <span>{totalPrice} $</span>
         </li>
         <li>
           <Link to={"/favorites"}>
